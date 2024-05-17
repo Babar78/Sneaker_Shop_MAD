@@ -32,10 +32,10 @@ class _BodyProfileState extends State<BodyProfile> {
           SizedBox(
             height: 20,
           ),
-          middleStatusListView(width, height),
-          SizedBox(
-            height: 20,
-          ),
+          // middleStatusListView(width, height),
+          // SizedBox(
+          //   height: 20,
+          // ),
           middleDashboard(width, height),
           bottomSection(width, height),
         ],
@@ -61,7 +61,7 @@ class _BodyProfileState extends State<BodyProfile> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Amir.H Bayat", style: AppThemes.profileDevName),
+              Text("M.Babar", style: AppThemes.profileDevName),
               Text(
                 "Flutter Developer",
                 style: TextStyle(
