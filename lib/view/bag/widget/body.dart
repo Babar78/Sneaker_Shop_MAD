@@ -27,7 +27,6 @@ class _BodyBagViewState extends State<BodyBagView>
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 8.0),
       width: width,
       height: height,
       child: Stack(
@@ -56,8 +55,8 @@ class _BodyBagViewState extends State<BodyBagView>
               ? Container()
               : Positioned(
                   bottom: 0,
-                  left: 10,
-                  right: 10,
+                  left: 0,
+                  right: 0,
                   child: bottomInfo(width, height),
                 )
         ],
@@ -68,6 +67,7 @@ class _BodyBagViewState extends State<BodyBagView>
   // Top Texts Components
   topText(width, height) {
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20),
       width: width,
       height: height / 14,
       child: FadeAnimation(
@@ -110,6 +110,7 @@ class _BodyBagViewState extends State<BodyBagView>
   // Main ListView Components
   mainListView(width, height) {
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20),
       width: width,
       height: height / 1.6,
       child: ListView.builder(
@@ -237,13 +238,19 @@ class _BodyBagViewState extends State<BodyBagView>
 
   bottomInfo(width, height) {
     return Container(
-      margin: EdgeInsets.only(top: 10.0),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      decoration: BoxDecoration(
+          color: Colors.grey[300],
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          )),
       width: width,
-      height: height / 7,
+      height: height / 6.5,
       child: Column(
         children: [
           FadeAnimation(
-            delay: 2,
+            delay: 0,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -254,7 +261,7 @@ class _BodyBagViewState extends State<BodyBagView>
             ),
           ),
           SizedBox(
-            height: 30,
+            height: 10,
           ),
           materialButton(width, height)
         ],
