@@ -1,4 +1,4 @@
-package com.example.sneakers_app
+package com.example.sole_quest
 
 import io.flutter.embedding.android.FlutterActivity
 

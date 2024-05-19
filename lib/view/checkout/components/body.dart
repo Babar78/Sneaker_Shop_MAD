@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:sneakers_app/animation/fadeanimation.dart';
-import 'package:sneakers_app/utils/constants.dart';
-import 'package:sneakers_app/view/checkout/components/checkout_form.dart';
+import 'package:sole_quest/animation/fadeanimation.dart';
+import 'package:sole_quest/utils/constants.dart';
+import 'package:sole_quest/view/checkout/components/checkout_form.dart';
 
 class CheckoutBody extends StatefulWidget {
   const CheckoutBody({Key? key}) : super(key: key);

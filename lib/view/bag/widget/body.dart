@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:sneakers_app/theme/custom_app_theme.dart';
+import 'package:sole_quest/theme/custom_app_theme.dart';
 
 import '../../../../utils/app_methods.dart';
 import '../../../animation/fadeanimation.dart';

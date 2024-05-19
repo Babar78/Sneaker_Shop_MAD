@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sneakers_app/utils/constants.dart';
-import 'package:sneakers_app/view/checkout/components/app_bar.dart';
-import 'package:sneakers_app/view/checkout/components/body.dart';
+import 'package:sole_quest/utils/constants.dart';
+import 'package:sole_quest/view/checkout/components/app_bar.dart';
+import 'package:sole_quest/view/checkout/components/body.dart';
 
 class Checkout extends StatelessWidget {
   const Checkout({Key? key}) : super(key: key);

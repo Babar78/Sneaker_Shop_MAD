@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:sneakers_app/animation/fadeanimation.dart';
-import 'package:sneakers_app/theme/custom_app_theme.dart';
+import 'package:sole_quest/animation/fadeanimation.dart';
+import 'package:sole_quest/theme/custom_app_theme.dart';
 
 class EmptyList extends StatelessWidget {
   @override

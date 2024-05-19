@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:sneakers_app/data/dummy_data.dart';
-import 'package:sneakers_app/widget/snack_bar.dart';
+import 'package:sole_quest/data/dummy_data.dart';
+import 'package:sole_quest/widget/snack_bar.dart';
 
 import '../models/models.dart';
 

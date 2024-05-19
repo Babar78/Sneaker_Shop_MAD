@@ -3,7 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sneakers_app/theme/custom_app_theme.dart';
+import 'package:sole_quest/theme/custom_app_theme.dart';
 
 import '../../../../animation/fadeanimation.dart';
 import '../../../../utils/constants.dart';
