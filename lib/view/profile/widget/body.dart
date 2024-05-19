@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sole_quest/theme/custom_app_theme.dart';
 
 import '../../../../animation/fadeanimation.dart';
@@ -19,6 +21,15 @@ class BodyProfile extends StatefulWidget {
 
 class _BodyProfileState extends State<BodyProfile> {
   int statusCurrentIndex = 0;
+  late SharedPreferences _prefs;
+  String? _username;
+  String? _email;
+  String? _city;
+
+  // Get the current user id
+  final String documentId = FirebaseAuth.instance.currentUser!.uid;
+
+  List<String> userInfo = [];
 
   Logout() async {
     FirebaseAuth.instance.signOut().then((value) {
@@ -27,28 +38,77 @@ class _BodyProfileState extends State<BodyProfile> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _getUserInfoFromSharedPreferences();
+    // fetchUserInfo();
+  }
+
+  // Future<void> fetchUserInfo() async {
+  //   try {
+  //     CollectionReference users =
+  //         FirebaseFirestore.instance.collection('users');
+  //     DocumentSnapshot documentSnapshot = await users.doc(documentId).get();
+
+  //     if (documentSnapshot.exists) {
+  //       List<String> mydata = [];
+  //       mydata.add(documentSnapshot.get('username'));
+  //       mydata.add(documentSnapshot.get('email'));
+  //       mydata.add(documentSnapshot.get('city'));
+  //       setState(() {
+  //         userInfo = mydata;
+  //       });
+  //     } else {
+  //       print('Document does not exist on the database');
+  //     }
+  //   } catch (e) {
+  //     print('Error fetching user info: $e');
+  //   }
+  // }
+
+  Future<void> _getUserInfoFromSharedPreferences() async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final List<String>? userData = prefs.getStringList('userInfo');
+      print(userData);
+      if (userData != null) {
+        setState(() {
+          userInfo = userData;
+        });
+      }
+    } catch (e) {
+      print('Error getting user info from SharedPreferences: $e');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 7),
-      width: width,
-      height: height,
-      child: Column(
-        children: [
-          topProfilePicAndName(width, height),
-          SizedBox(
-            height: 20,
-          ),
-          // middleStatusListView(width, height),
-          // SizedBox(
-          //   height: 20,
-          // ),
-          middleDashboard(width, height),
-          bottomSection(width, height),
-        ],
-      ),
-    );
+
+    return userInfo.isEmpty
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : Container(
+            margin: EdgeInsets.symmetric(horizontal: 8, vertical: 7),
+            width: width,
+            height: height,
+            child: Column(
+              children: [
+                topProfilePicAndName(width, height),
+                SizedBox(
+                  height: 20,
+                ),
+                // middleStatusListView(width, height),
+                // SizedBox(
+                //   height: 20,
+                // ),
+                middleDashboard(width, height),
+                bottomSection(width, height),
+              ],
+            ),
+          );
   }
 
   // Top Profile Photo And Name Components
@@ -69,9 +129,9 @@ class _BodyProfileState extends State<BodyProfile> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("M.Babar", style: AppThemes.profileDevName),
+              Text(userInfo[0], style: AppThemes.profileDevName),
               Text(
-                "Flutter Developer",
+                userInfo[1],
                 style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w500,
@@ -295,7 +355,7 @@ class _BodyProfileState extends State<BodyProfile> {
       delay: 2.5,
       child: Container(
         width: width,
-        height: height / 6.5,
+        height: height / 5,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -309,22 +369,24 @@ class _BodyProfileState extends State<BodyProfile> {
             SizedBox(
               height: 15,
             ),
-            Text(
-              "    Switch to Other Account",
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.blue[600],
-                  fontSize: 17),
-            ),
-            SizedBox(
-              height: 20,
+            TextButton(
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, '/login');
+              },
+              child: Text(
+                "    Switch to Other Account",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: Colors.blue[600],
+                    fontSize: 17),
+              ),
             ),
             TextButton(
               onPressed: () {
                 Logout();
               },
               child: Text(
-                "Log Out",
+                "    Log Out",
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: Colors.red[600],
@@ -337,3 +399,5 @@ class _BodyProfileState extends State<BodyProfile> {
     );
   }
 }
+
+

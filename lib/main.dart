@@ -2,6 +2,7 @@
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sole_quest/checkLoggedIn.dart';
 import 'package:sole_quest/firebase_options.dart';
 import 'package:sole_quest/view/checkout/checkout_screen.dart';
@@ -15,6 +16,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await SharedPreferences.getInstance();
   runApp(const MyApp());
 }
 

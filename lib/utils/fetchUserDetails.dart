@@ -2,42 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sole_quest/view/login/login.dart';
-import 'package:sole_quest/view/navigator.dart';
 
-class CheckLoggedInUser extends StatefulWidget {
-  const CheckLoggedInUser({Key? key}) : super(key: key);
+class FetchUserDetails extends StatefulWidget {
+  const FetchUserDetails({Key? key}) : super(key: key);
 
   @override
-  State<CheckLoggedInUser> createState() => _CheckLoggedInUserState();
+  State<FetchUserDetails> createState() => _FetchUserDetailsState();
 }
 
-class _CheckLoggedInUserState extends State<CheckLoggedInUser> {
+class _FetchUserDetailsState extends State<FetchUserDetails> {
   List<String> userInfo = [];
-  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _checkUser();
+    fetchAndSaveUserInfo();
+    print('User info: $userInfo');
   }
 
-  Future<void> _checkUser() async {
-    final user = FirebaseAuth.instance.currentUser;
-
-    if (user != null) {
-      await _fetchAndSaveUserInfo();
-      setState(() {
-        _isLoading = false;
-      });
-    } else {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
-  Future<void> _fetchAndSaveUserInfo() async {
+  Future<void> fetchAndSaveUserInfo() async {
     final user = FirebaseAuth.instance.currentUser;
     String? documentId = user?.uid;
     try {
@@ -50,14 +33,12 @@ class _CheckLoggedInUserState extends State<CheckLoggedInUser> {
         mydata.add(documentSnapshot.get('username'));
         mydata.add(documentSnapshot.get('email'));
         mydata.add(documentSnapshot.get('city'));
-        if (mounted) {
-          // Check if the widget is still mounted
-          setState(() {
-            userInfo = mydata;
-          });
-        }
+        setState(() {
+          userInfo = mydata;
+        });
+
         // Save userInfo to SharedPreferences
-        await _saveUserInfoToSharedPreferences(userInfo);
+        await saveUserInfoToSharedPreferences(userInfo);
       } else {
         print('Document does not exist on the database');
       }
@@ -66,7 +47,7 @@ class _CheckLoggedInUserState extends State<CheckLoggedInUser> {
     }
   }
 
-  Future<void> _saveUserInfoToSharedPreferences(List<String> userInfo) async {
+  Future<void> saveUserInfoToSharedPreferences(List<String> userInfo) async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setStringList('userInfo', userInfo);
@@ -77,12 +58,6 @@ class _CheckLoggedInUserState extends State<CheckLoggedInUser> {
 
   @override
   Widget build(BuildContext context) {
-    return _isLoading
-        ? Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          )
-        : userInfo.isNotEmpty
-            ? MainNavigator()
-            : Login();
+    return const Placeholder();
   }
 }
