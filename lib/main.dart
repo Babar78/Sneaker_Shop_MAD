@@ -2,6 +2,7 @@
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:sole_quest/checkLoggedIn.dart';
 import 'package:sole_quest/firebase_options.dart';
 import 'package:sole_quest/view/checkout/checkout_screen.dart';
 import 'package:sole_quest/view/login/login.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Quicksand',
       ),
       title: 'SoleQuest',
-      home: Login(),
+      home: CheckLoggedInUser(),
       routes: {
         '/login': (context) => Login(),
         '/signup': (context) => Signup(),
