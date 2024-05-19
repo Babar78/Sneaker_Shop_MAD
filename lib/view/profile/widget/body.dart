@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sole_quest/theme/custom_app_theme.dart';
 
@@ -18,6 +19,13 @@ class BodyProfile extends StatefulWidget {
 
 class _BodyProfileState extends State<BodyProfile> {
   int statusCurrentIndex = 0;
+
+  Logout() async {
+    FirebaseAuth.instance.signOut().then((value) {
+      Navigator.pushReplacementNamed(context, '/login');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -311,12 +319,17 @@ class _BodyProfileState extends State<BodyProfile> {
             SizedBox(
               height: 20,
             ),
-            Text(
-              "    Log Out",
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.red[500],
-                  fontSize: 18),
+            TextButton(
+              onPressed: () {
+                Logout();
+              },
+              child: Text(
+                "Log Out",
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: Colors.red[600],
+                    fontSize: 17),
+              ),
             ),
           ],
         ),

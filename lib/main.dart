@@ -35,7 +35,6 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => Signup(),
         '/home': (context) => MainNavigator(),
         '/checkout': (context) => Checkout(),
-        // Add other routes here if needed
       },
     );
   }
