@@ -1,12 +1,19 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:sole_quest/firebase_options.dart';
 import 'package:sole_quest/view/checkout/checkout_screen.dart';
 import 'package:sole_quest/view/login/login.dart';
 import 'package:sole_quest/view/navigator.dart';
 import 'package:sole_quest/view/signup/signup.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding
+      .ensureInitialized(); // Ensure that binding is initialized
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 

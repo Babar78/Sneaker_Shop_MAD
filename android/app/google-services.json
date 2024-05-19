@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "779464296217",
+    "project_id": "solequest-7bd0a",
+    "storage_bucket": "solequest-7bd0a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:779464296217:android:e005a13ba94ab7e9332788",
+        "android_client_info": {
+          "package_name": "com.example.sole_quest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXsJHJLbqsv_m4OsfqskwBYEC6AsxKBPo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

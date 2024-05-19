@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sole_quest/utils/constants.dart';
@@ -28,6 +29,10 @@ class _SignupState extends State<Signup> {
   final FocusNode _passwordFocusNode = FocusNode();
   final FocusNode _confirmPasswordFocusNode = FocusNode();
 
+  // Show Password Boolean
+  bool _showPassword = false;
+  bool _showConfirmPassword = false;
+
   @override
   void initState() {
     super.initState();
@@ -57,26 +62,37 @@ class _SignupState extends State<Signup> {
     setState(() {});
   }
 
-  signUp(String username, String email, String city, String password,
-      String confirmPassword) async {
+  Future<void> signUp(String username, String email, String city,
+      String password, String confirmPassword) async {
     if (password != confirmPassword) {
-      _showErrorDialog(context);
+      _showErrorDialog(context, 'Passwords do not match');
     } else {
-      UserCredential? userCredential;
       try {
-        userCredential =
+        UserCredential userCredential =
             await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
+
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredential.user!.uid)
+            .set({
+          'username': username,
+          'email': email,
+          'city': city,
+          'password': password,
+        });
+        Navigator.pushNamed(context, '/home');
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
-          print('The password provided is too weak.');
+          _showErrorDialog(context, 'The password provided is too weak.');
         } else if (e.code == 'email-already-in-use') {
-          print('The account already exists for that email.');
+          _showErrorDialog(
+              context, 'The account already exists for that email.');
         }
       } catch (e) {
-        print(e);
+        print(e.toString());
       }
     }
   }
@@ -295,6 +311,18 @@ class _SignupState extends State<Signup> {
                       cursorColor: Colors.black87,
                       decoration: InputDecoration(
                         labelText: 'Password',
+                        suffixIcon: IconButton(
+                            onPressed: () => {
+                                  setState(() {
+                                    _showPassword = !_showPassword;
+                                  })
+                                },
+                            icon: Icon(
+                              _showPassword
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            color: Colors.black87),
                         labelStyle: const TextStyle(
                           color: Colors.black87,
                         ),
@@ -317,7 +345,7 @@ class _SignupState extends State<Signup> {
                           ),
                         ),
                       ),
-                      obscureText: true,
+                      obscureText: _showPassword,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your password';
@@ -335,6 +363,19 @@ class _SignupState extends State<Signup> {
                         labelStyle: const TextStyle(
                           color: Colors.black87,
                         ),
+                        suffixIcon: IconButton(
+                            onPressed: () => {
+                                  setState(() {
+                                    _showConfirmPassword =
+                                        !_showConfirmPassword;
+                                  })
+                                },
+                            icon: Icon(
+                              _showConfirmPassword
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                            color: Colors.black87),
                         focusedBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(15)),
                           borderSide: BorderSide(
@@ -354,7 +395,7 @@ class _SignupState extends State<Signup> {
                           ),
                         ),
                       ),
-                      obscureText: true,
+                      obscureText: _showConfirmPassword,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your password';
@@ -419,13 +460,13 @@ class _SignupState extends State<Signup> {
   }
 }
 
-void _showErrorDialog(BuildContext context) {
+void _showErrorDialog(BuildContext context, String message) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
         title: const Text('Error'),
-        content: const Text('Passwords do not match'),
+        content: Text(message),
         actions: [
           TextButton(
             onPressed: () {
