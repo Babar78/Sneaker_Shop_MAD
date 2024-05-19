@@ -21,15 +21,6 @@ PreferredSize? customAppBarProfile() {
           style: AppThemes.profileAppBarTitle,
         ),
       ),
-      actions: const [
-        Padding(
-          padding: EdgeInsets.only(top: 8.0, right: 5),
-          child: Icon(
-            Icons.more_vert,
-            color: AppConstantsColor.darkTextColor,
-          ),
-        )
-      ],
     ),
   );
 }
