@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sole_quest/utils/constants.dart';
 import 'package:sole_quest/view/bag/bag_screen.dart';
-import 'package:sole_quest/view/checkout/checkout_screen.dart';
 import 'package:sole_quest/view/home/home_screen.dart';
 import 'package:sole_quest/view/profile/profile_screen.dart';
 

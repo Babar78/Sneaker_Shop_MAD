@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sole_quest/utils/constants.dart';
 
@@ -10,10 +11,19 @@ class Signup extends StatefulWidget {
 
 class _SignupState extends State<Signup> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  // final TextEditingController _countryController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  // final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+
   final FocusNode _usernameFocusNode = FocusNode();
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _countryFocusNode = FocusNode();
-  final FocusNode _addressFocusNode = FocusNode();
+  final FocusNode _cityFocusNode = FocusNode();
   final FocusNode _phoneNumberFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
   final FocusNode _confirmPasswordFocusNode = FocusNode();
@@ -24,7 +34,7 @@ class _SignupState extends State<Signup> {
     _usernameFocusNode.addListener(_updateFocus);
     _emailFocusNode.addListener(_updateFocus);
     _countryFocusNode.addListener(_updateFocus);
-    _addressFocusNode.addListener(_updateFocus);
+    _cityFocusNode.addListener(_updateFocus);
     _phoneNumberFocusNode.addListener(_updateFocus);
     _passwordFocusNode.addListener(_updateFocus);
     _confirmPasswordFocusNode.addListener(_updateFocus);
@@ -35,7 +45,7 @@ class _SignupState extends State<Signup> {
     _usernameFocusNode.removeListener(_updateFocus);
     _emailFocusNode.removeListener(_updateFocus);
     _countryFocusNode.removeListener(_updateFocus);
-    _addressFocusNode.removeListener(_updateFocus);
+    _cityFocusNode.removeListener(_updateFocus);
     _phoneNumberFocusNode.removeListener(_updateFocus);
     _passwordFocusNode.removeListener(_updateFocus);
     _emailFocusNode.dispose();
@@ -45,6 +55,30 @@ class _SignupState extends State<Signup> {
 
   void _updateFocus() {
     setState(() {});
+  }
+
+  signUp(String username, String email, String city, String password,
+      String confirmPassword) async {
+    if (password != confirmPassword) {
+      _showErrorDialog(context);
+    } else {
+      UserCredential? userCredential;
+      try {
+        userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          print('The password provided is too weak.');
+        } else if (e.code == 'email-already-in-use') {
+          print('The account already exists for that email.');
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
   }
 
   @override
@@ -76,6 +110,7 @@ class _SignupState extends State<Signup> {
                     ),
                     const SizedBox(height: 50),
                     TextFormField(
+                      controller: _usernameController,
                       focusNode: _usernameFocusNode,
                       cursorColor: Colors.black87,
                       decoration: InputDecoration(
@@ -111,6 +146,7 @@ class _SignupState extends State<Signup> {
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
+                      controller: _emailController,
                       focusNode: _emailFocusNode,
                       cursorColor: Colors.black87,
                       decoration: InputDecoration(
@@ -146,6 +182,7 @@ class _SignupState extends State<Signup> {
                     ),
                     const SizedBox(height: 20),
                     // TextFormField(
+                    //   controller: _countryController,
                     //   focusNode: _countryFocusNode,
                     //   cursorColor: Colors.black87,
                     //   decoration: InputDecoration(
@@ -181,10 +218,11 @@ class _SignupState extends State<Signup> {
                     // ),
                     // const SizedBox(height: 20),
                     TextFormField(
-                      focusNode: _addressFocusNode,
+                      controller: _cityController,
+                      focusNode: _cityFocusNode,
                       cursorColor: Colors.black87,
                       decoration: InputDecoration(
-                        labelText: 'Address',
+                        labelText: 'City',
                         labelStyle: const TextStyle(
                           color: Colors.black87,
                         ),
@@ -196,7 +234,7 @@ class _SignupState extends State<Signup> {
                         ),
                         prefixIcon: Icon(
                           Icons.location_city,
-                          color: _addressFocusNode.hasFocus
+                          color: _cityFocusNode.hasFocus
                               ? AppConstantsColor.materialButtonColor
                               : Colors.black87,
                         ),
@@ -209,13 +247,14 @@ class _SignupState extends State<Signup> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your address';
+                          return 'Please enter your city';
                         }
                         return null;
                       },
                     ),
                     const SizedBox(height: 20),
                     // TextFormField(
+                    //   controller: _phoneNumberController,
                     //   focusNode: _phoneNumberFocusNode,
                     //   cursorColor: Colors.black87,
                     //   decoration: InputDecoration(
@@ -251,6 +290,7 @@ class _SignupState extends State<Signup> {
                     // ),
                     // const SizedBox(height: 20),
                     TextFormField(
+                      controller: _passwordController,
                       focusNode: _passwordFocusNode,
                       cursorColor: Colors.black87,
                       decoration: InputDecoration(
@@ -287,6 +327,7 @@ class _SignupState extends State<Signup> {
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
+                      controller: _confirmPasswordController,
                       focusNode: _confirmPasswordFocusNode,
                       cursorColor: Colors.black87,
                       decoration: InputDecoration(
@@ -361,7 +402,12 @@ class _SignupState extends State<Signup> {
         color: AppConstantsColor.materialButtonColor,
         onPressed: () {
           if (_formKey.currentState?.validate() ?? false) {
-            // Pass the itemsOnBag to the checkout screen
+            signUp(
+                _usernameController.text,
+                _emailController.text,
+                _cityController.text,
+                _passwordController.text,
+                _confirmPasswordController.text);
           }
         },
         child: const Text(
@@ -371,4 +417,24 @@ class _SignupState extends State<Signup> {
       ),
     );
   }
+}
+
+void _showErrorDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Error'),
+        content: const Text('Passwords do not match'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      );
+    },
+  );
 }
