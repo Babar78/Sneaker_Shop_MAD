@@ -21,10 +21,6 @@ class BodyProfile extends StatefulWidget {
 
 class _BodyProfileState extends State<BodyProfile> {
   int statusCurrentIndex = 0;
-  late SharedPreferences _prefs;
-  String? _username;
-  String? _email;
-  String? _city;
 
   // Get the current user id
   final String documentId = FirebaseAuth.instance.currentUser!.uid;
@@ -35,42 +31,21 @@ class _BodyProfileState extends State<BodyProfile> {
     FirebaseAuth.instance.signOut().then((value) {
       Navigator.pushReplacementNamed(context, '/login');
     });
+    // Clear userInfo from SharedPreferences
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('userInfo');
   }
 
   @override
   void initState() {
     super.initState();
     _getUserInfoFromSharedPreferences();
-    // fetchUserInfo();
   }
-
-  // Future<void> fetchUserInfo() async {
-  //   try {
-  //     CollectionReference users =
-  //         FirebaseFirestore.instance.collection('users');
-  //     DocumentSnapshot documentSnapshot = await users.doc(documentId).get();
-
-  //     if (documentSnapshot.exists) {
-  //       List<String> mydata = [];
-  //       mydata.add(documentSnapshot.get('username'));
-  //       mydata.add(documentSnapshot.get('email'));
-  //       mydata.add(documentSnapshot.get('city'));
-  //       setState(() {
-  //         userInfo = mydata;
-  //       });
-  //     } else {
-  //       print('Document does not exist on the database');
-  //     }
-  //   } catch (e) {
-  //     print('Error fetching user info: $e');
-  //   }
-  // }
 
   Future<void> _getUserInfoFromSharedPreferences() async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final List<String>? userData = prefs.getStringList('userInfo');
-      print(userData);
       if (userData != null) {
         setState(() {
           userInfo = userData;
@@ -83,40 +58,28 @@ class _BodyProfileState extends State<BodyProfile> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
-
     return userInfo.isEmpty
         ? Center(
             child: CircularProgressIndicator(),
           )
-        : Container(
-            margin: EdgeInsets.symmetric(horizontal: 8, vertical: 7),
-            width: width,
-            height: height,
+        : Padding(
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
-                topProfilePicAndName(width, height),
-                SizedBox(
-                  height: 20,
-                ),
-                // middleStatusListView(width, height),
-                // SizedBox(
-                //   height: 20,
-                // ),
-                middleDashboard(width, height),
-                bottomSection(width, height),
+                topProfilePicAndName(),
+                middleDashboard(),
+                bottomSection(),
               ],
             ),
           );
   }
 
   // Top Profile Photo And Name Components
-  topProfilePicAndName(width, height) {
+  topProfilePicAndName() {
     return FadeAnimation(
       delay: 1,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           CircleAvatar(
             radius: 50,
@@ -126,126 +89,124 @@ class _BodyProfileState extends State<BodyProfile> {
           SizedBox(
             width: 20,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(userInfo[0], style: AppThemes.profileDevName),
-              Text(
-                userInfo[1],
-                style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.grey),
-              ),
-            ],
+          Text(userInfo[0], style: AppThemes.profileDevName),
+          Text(
+            userInfo[1],
+            style: TextStyle(
+                fontSize: 17, fontWeight: FontWeight.w500, color: Colors.grey),
           ),
           SizedBox(
             width: 10,
           ),
-          IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.edit_outlined,
+          Text(
+            userInfo[2],
+            style: TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.w500,
                 color: Colors.grey,
-              ))
+                fontStyle: FontStyle.italic),
+          ),
+          TextButton(
+              style: ButtonStyle(
+                padding: MaterialStateProperty.all(EdgeInsets.all(0)),
+              ),
+              onPressed: () {},
+              child: Text(
+                "Edit Profile",
+                style: TextStyle(
+                  color: Colors.blue[600],
+                  fontSize: 17,
+                ),
+              )),
         ],
       ),
     );
   }
 
   // Middle Status List View Components
-  middleStatusListView(width, height) {
+  middleStatusListView() {
     return FadeAnimation(
       delay: 1.5,
-      child: Container(
-        width: width,
-        height: height / 9,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: Text(
-                "My Status",
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Colors.grey,
-                    fontSize: 15),
-              ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 15),
+            child: Text(
+              "My Status",
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey,
+                  fontSize: 15),
             ),
-            SizedBox(
-              height: 5,
-            ),
-            Center(
-              child: Container(
-                width: width / 1.12,
-                height: height / 13,
-                child: ListView.builder(
-                    physics: BouncingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: userStatus.length,
-                    itemBuilder: (ctx, index) {
-                      UserStatus status = userStatus[index];
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            statusCurrentIndex = index;
-                          });
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5),
-                          child: Container(
-                            margin: EdgeInsets.all(5),
-                            width: 120,
-                            decoration: BoxDecoration(
-                              color: statusCurrentIndex == index
-                                  ? status.selectColor
-                                  : status.unSelectColor,
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  status.emoji,
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                                SizedBox(
-                                  width: 4,
-                                ),
-                                Text(
-                                  status.txt,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: AppConstantsColor.lightTextColor,
-                                      fontSize: 16),
-                                ),
-                              ],
-                            ),
-                          ),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Center(
+            child: ListView.builder(
+                physics: BouncingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                itemCount: userStatus.length,
+                itemBuilder: (ctx, index) {
+                  UserStatus status = userStatus[index];
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        statusCurrentIndex = index;
+                      });
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      child: Container(
+                        margin: EdgeInsets.all(5),
+                        width: 120,
+                        decoration: BoxDecoration(
+                          color: statusCurrentIndex == index
+                              ? status.selectColor
+                              : status.unSelectColor,
+                          borderRadius: BorderRadius.circular(25),
                         ),
-                      );
-                    }),
-              ),
-            )
-          ],
-        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              status.emoji,
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            SizedBox(
+                              width: 4,
+                            ),
+                            Text(
+                              status.txt,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: AppConstantsColor.lightTextColor,
+                                  fontSize: 16),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+          )
+        ],
       ),
     );
   }
 
   // Middle Dashboard ListTile Components
-  middleDashboard(width, height) {
+  middleDashboard() {
     return FadeAnimation(
       delay: 2,
       child: Container(
-        width: width,
-        height: height / 3,
+        width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "    Dashboard",
+              "Dashboard",
               style: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: Colors.grey,
@@ -254,94 +215,162 @@ class _BodyProfileState extends State<BodyProfile> {
             SizedBox(
               height: 10,
             ),
-            RoundedLisTile(
-              width: width,
-              height: height,
-              leadingBackColor: Colors.green[600],
-              icon: Icons.wallet_travel_outlined,
-              title: "Payments",
-              trailing: Container(
-                width: 80,
-                height: 30,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.blue[700],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
                   children: [
-                    Text(
-                      "2 New",
-                      style: TextStyle(
-                          color: AppConstantsColor.lightTextColor,
-                          fontWeight: FontWeight.w500),
+                    Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: Colors.green[600],
+                      ),
+                      child: Icon(
+                        Icons.wallet_travel_outlined,
+                        color: Colors.white,
+                      ),
                     ),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      color: AppConstantsColor.lightTextColor,
-                      size: 15,
-                    )
-                  ],
-                ),
-              ),
-            ),
-            RoundedLisTile(
-              width: width,
-              height: height,
-              leadingBackColor: Colors.yellow[600],
-              icon: Icons.archive,
-              title: "Achievement's",
-              trailing: Container(
-                width: 30,
-                height: 30,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      color: AppConstantsColor.darkTextColor,
-                      size: 15,
-                    )
-                  ],
-                ),
-              ),
-            ),
-            RoundedLisTile(
-              width: width,
-              height: height,
-              leadingBackColor: Colors.grey[400],
-              icon: Icons.shield,
-              title: "Privacy",
-              trailing: Container(
-                width: 140,
-                height: 30,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.red[500],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Action Needed  ",
-                      style: TextStyle(
-                          color: AppConstantsColor.lightTextColor,
-                          fontWeight: FontWeight.w500),
+                    SizedBox(
+                      width: 10,
                     ),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      color: AppConstantsColor.lightTextColor,
-                      size: 15,
-                    )
+                    Text(
+                      "Payments",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w800,
+                          color: Colors.black,
+                          fontSize: 16),
+                    ),
                   ],
                 ),
-              ),
+                Container(
+                  width: 80,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.blue[700],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "2 New",
+                        style: TextStyle(
+                            color: AppConstantsColor.lightTextColor,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        color: AppConstantsColor.lightTextColor,
+                        size: 15,
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: Colors.grey[400],
+                      ),
+                      child: Icon(
+                        Icons.shield,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "Privacy",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w800,
+                          color: Colors.black,
+                          fontSize: 16),
+                    ),
+                  ],
+                ),
+                Container(
+                  width: 130,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.red[500],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Action Needed",
+                        style: TextStyle(
+                            color: AppConstantsColor.lightTextColor,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        color: AppConstantsColor.lightTextColor,
+                        size: 15,
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: Colors.yellow[600],
+                      ),
+                      child: Icon(
+                        Icons.archive,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "Acheivements",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w800,
+                          color: Colors.black,
+                          fontSize: 16),
+                    ),
+                  ],
+                ),
+                Icon(
+                  Icons.arrow_forward_ios,
+                  color: AppConstantsColor.darkTextColor,
+                  size: 15,
+                )
+              ],
+            ),
+            SizedBox(
+              height: 40,
             ),
           ],
         ),
@@ -350,17 +379,16 @@ class _BodyProfileState extends State<BodyProfile> {
   }
 
   // My Account Section Components
-  bottomSection(width, height) {
+  bottomSection() {
     return FadeAnimation(
       delay: 2.5,
       child: Container(
-        width: width,
-        height: height / 5,
+        width: double.infinity,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "    My Account",
+              "My Account",
               style: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: Colors.grey,
@@ -370,11 +398,14 @@ class _BodyProfileState extends State<BodyProfile> {
               height: 15,
             ),
             TextButton(
+              style: ButtonStyle(
+                padding: MaterialStateProperty.all(EdgeInsets.all(0)),
+              ),
               onPressed: () {
                 Navigator.pushReplacementNamed(context, '/login');
               },
               child: Text(
-                "    Switch to Other Account",
+                "Switch to Other Account",
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: Colors.blue[600],
@@ -382,11 +413,15 @@ class _BodyProfileState extends State<BodyProfile> {
               ),
             ),
             TextButton(
+              style: ButtonStyle(
+                padding: MaterialStateProperty.all(EdgeInsets.all(0)),
+              ),
               onPressed: () {
-                Logout();
+                _showConfirmationDialog(
+                    context, 'Are you sure you want to log out?');
               },
               child: Text(
-                "    Log Out",
+                "Log Out",
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: Colors.red[600],
@@ -398,6 +433,31 @@ class _BodyProfileState extends State<BodyProfile> {
       ),
     );
   }
+
+  void _showConfirmationDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm Logout'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Logout();
+              },
+              child: const Text('Logout'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
-
-
