@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sole_quest/utils/constants.dart';
 
@@ -10,8 +11,13 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
+
+  bool _showPassword = false;
 
   @override
   void initState() {
@@ -31,6 +37,19 @@ class _LoginState extends State<Login> {
 
   void _updateFocus() {
     setState(() {});
+  }
+
+  Future<void> Login(String email, String password) async {
+    try {
+      UserCredential? userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      Navigator.pushReplacementNamed(context, '/home');
+    } on FirebaseAuthException catch (e) {
+      _showErrorDialog(context, e.message.toString());
+    }
   }
 
   @override
@@ -63,6 +82,7 @@ class _LoginState extends State<Login> {
 
                   const SizedBox(height: 50),
                   TextFormField(
+                    controller: _emailController,
                     focusNode: _emailFocusNode,
                     cursorColor: Colors.black87,
                     decoration: InputDecoration(
@@ -98,10 +118,23 @@ class _LoginState extends State<Login> {
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
+                    controller: _passwordController,
                     focusNode: _passwordFocusNode,
                     cursorColor: Colors.black87,
                     decoration: InputDecoration(
                       labelText: 'Password',
+                      suffixIcon: IconButton(
+                          onPressed: () => {
+                                setState(() {
+                                  _showPassword = !_showPassword;
+                                })
+                              },
+                          icon: Icon(
+                            _showPassword
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          color: Colors.black87),
                       labelStyle: const TextStyle(
                         color: Colors.black87,
                       ),
@@ -124,7 +157,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                     ),
-                    obscureText: true,
+                    obscureText: _showPassword,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your password';
@@ -171,7 +204,10 @@ class _LoginState extends State<Login> {
         color: AppConstantsColor.materialButtonColor,
         onPressed: () {
           if (_formKey.currentState?.validate() ?? false) {
-            // Pass the itemsOnBag to the checkout screen
+            Login(
+              _emailController.text,
+              _passwordController.text,
+            );
           }
         },
         child: const Text(
@@ -181,4 +217,24 @@ class _LoginState extends State<Login> {
       ),
     );
   }
+}
+
+void _showErrorDialog(BuildContext context, String message) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Error'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      );
+    },
+  );
 }
