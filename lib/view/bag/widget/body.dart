@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unnecessary_brace_in_string_interps, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:sole_quest/theme/custom_app_theme.dart';
 
 import '../../../../utils/app_methods.dart';
@@ -34,10 +33,10 @@ class _BodyBagViewState extends State<BodyBagView>
           Positioned.fill(
             child: Column(
               children: [
-                topText(width, height),
                 Divider(
                   color: Colors.grey,
                 ),
+                topText(width, height),
                 itemsOnBag.isEmpty
                     ? EmptyList()
                     : Column(
@@ -75,9 +74,9 @@ class _BodyBagViewState extends State<BodyBagView>
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text("My Bag", style: AppThemes.bagTitle),
+            const Text("Total Items", style: AppThemes.bagTotalPrice),
             Text(
-              "Total ${lengthsOfItemsOnBag} Items",
+              "${lengthsOfItemsOnBag}",
               style: AppThemes.bagTotalPrice,
             ),
           ],

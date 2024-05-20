@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => const Signup(),
         '/home': (context) => MainNavigator(),
         '/checkout': (context) => const Checkout(),
+        '/cart': (context) => MyBagScreen(),
       },
     );
   }

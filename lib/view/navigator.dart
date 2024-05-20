@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sole_quest/utils/constants.dart';
 import 'package:sole_quest/view/bag/bag_screen.dart';
+import 'package:sole_quest/view/favourites/favourites_screen.dart';
 import 'package:sole_quest/view/home/home_screen.dart';
 import 'package:sole_quest/view/profile/profile_screen.dart';
 
@@ -17,7 +18,7 @@ class _MainNavigatorState extends State<MainNavigator> {
   PageController _pageController = PageController();
 
   int _selectedIndex = 0;
-  List<Widget> _screen = [HomeScreen(), MyBagScreen(), Profile()];
+  List<Widget> _screen = [HomeScreen(), FavouritesScreen(), Profile()];
 
   void _onPageChanged(int index) {
     setState(() {
@@ -57,7 +58,7 @@ class _MainNavigatorState extends State<MainNavigator> {
             icon: Icon(CupertinoIcons.home),
           ),
           CustomNavigationBarItem(
-            icon: Icon(CupertinoIcons.shopping_cart),
+            icon: Icon(CupertinoIcons.heart),
           ),
           CustomNavigationBarItem(
             icon: Icon(CupertinoIcons.person),
