@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/models.dart';
 
-final List<ShoeModel> availableShoes = [
+final List<ShoeModel> nikeShoes = [
   ShoeModel(
     name: "NIKE",
     model: "AIR-MAX",
@@ -61,6 +61,120 @@ final List<ShoeModel> availableShoes = [
   ),
 ];
 
+final List<ShoeModel> addidasShoes = [
+  ShoeModel(
+    name: "ADDIDAS",
+    model: "Ultraboost 21",
+    price: 200.00,
+    imgAddress: "assets/images/addidas1.png",
+    modelColor: const Color(0xff5a9baf),
+  ),
+  ShoeModel(
+    name: "ADDIDAS",
+    model: "Sneakers",
+    price: 99.00,
+    imgAddress: "assets/images/addidas2.png",
+    modelColor: const Color(0xff25282f),
+  ),
+  ShoeModel(
+    name: "ADDIDAS",
+    model: "Sneakers",
+    price: 120.00,
+    imgAddress: "assets/images/addidas3.png",
+    modelColor: const Color(0xff39383e),
+  ),
+  ShoeModel(
+    name: "ADDIDAS",
+    model: "Galaxy 6",
+    price: 110.00,
+    imgAddress: "assets/images/addidas4.png",
+    modelColor: const Color(0xff135353),
+  ),
+  ShoeModel(
+    name: "ADDIDAS",
+    model: "Response Super",
+    price: 150.00,
+    imgAddress: "assets/images/addidas5.png",
+    modelColor: const Color(0xff55b4d0),
+  ),
+];
+
+final List<ShoeModel> jordanShoes = [
+  ShoeModel(
+    name: "JORDAN",
+    model: "Air Jordan 1",
+    price: 200.00,
+    imgAddress: "assets/images/jordan1.png",
+    modelColor: const Color(0xff8a7b74),
+  ),
+  ShoeModel(
+    name: "JORDAN",
+    model: "Dunk Low",
+    price: 99.00,
+    imgAddress: "assets/images/jordan2.png",
+    modelColor: const Color(0xff25282f),
+  ),
+  ShoeModel(
+    name: "JORDAN",
+    model: "Dunk",
+    price: 120.00,
+    imgAddress: "assets/images/jordan3.png",
+    modelColor: const Color(0xff721621),
+  ),
+  ShoeModel(
+    name: "JORDAN",
+    model: "Sneakers",
+    price: 110.00,
+    imgAddress: "assets/images/jordan4.png",
+    modelColor: const Color(0xff494656),
+  ),
+  ShoeModel(
+    name: "JORDAN",
+    model: "Gym Red",
+    price: 150.00,
+    imgAddress: "assets/images/jordan5.png",
+    modelColor: const Color(0xff25282f),
+  ),
+];
+
+final List<ShoeModel> pumaShoes = [
+  ShoeModel(
+    name: "PUMA",
+    model: "Sports",
+    price: 200.00,
+    imgAddress: "assets/images/puma1.png",
+    modelColor: const Color(0xffdd052c),
+  ),
+  ShoeModel(
+    name: "PUMA",
+    model: "Track",
+    price: 99.00,
+    imgAddress: "assets/images/puma2.png",
+    modelColor: const Color(0xff3b3235),
+  ),
+  ShoeModel(
+    name: "PUMA",
+    model: "Racquet",
+    price: 120.00,
+    imgAddress: "assets/images/puma3.png",
+    modelColor: const Color(0xff2d3245),
+  ),
+  ShoeModel(
+    name: "PUMA",
+    model: "Basketball",
+    price: 110.00,
+    imgAddress: "assets/images/puma4.png",
+    modelColor: const Color(0xff549e5b),
+  ),
+  ShoeModel(
+    name: "PUMA",
+    model: "Sports",
+    price: 150.00,
+    imgAddress: "assets/images/puma5.png",
+    modelColor: const Color(0xff2b6ca4),
+  ),
+];
+
 List<ShoeModel> itemsOnBag = [];
 
 final List<UserStatus> userStatus = [
@@ -95,9 +209,9 @@ final List categories = [
   'Adidas',
   'Jordan',
   'Puma',
-  'Gucci',
-  'Tom Ford',
-  'Koio',
+  // 'Gucci',
+  // 'Tom Ford',
+  // 'Koio',
 ];
 final List featured = [
   'New',

@@ -21,6 +21,7 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   int selectedIndexOfCategory = 0;
   int selectedIndexOfFeatured = 1;
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -28,7 +29,7 @@ class _BodyState extends State<Body> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          topCategoriesWidget(width, height),
+          // topCategoriesWidget(width, height),
           SizedBox(height: 10),
           middleCategoriesWidget(width, height),
           SizedBox(height: 5),
@@ -91,26 +92,26 @@ class _BodyState extends State<Body> {
             quarterTurns: -1,
             child: ListView.builder(
                 physics: BouncingScrollPhysics(),
-                itemCount: featured.length,
+                itemCount: categories.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
                       setState(() {
-                        selectedIndexOfFeatured = index;
+                        selectedIndexOfCategory = index;
                       });
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: Text(
-                        featured[index],
+                        categories[index],
                         style: TextStyle(
                             fontSize:
-                                selectedIndexOfFeatured == index ? 19 : 17,
-                            color: selectedIndexOfFeatured == index
+                                selectedIndexOfCategory == index ? 19 : 17,
+                            color: selectedIndexOfCategory == index
                                 ? AppConstantsColor.darkTextColor
                                 : AppConstantsColor.unSelectedTextColor,
-                            fontWeight: selectedIndexOfFeatured == index
+                            fontWeight: selectedIndexOfCategory == index
                                 ? FontWeight.bold
                                 : FontWeight.w400),
                       ),
@@ -125,9 +126,34 @@ class _BodyState extends State<Body> {
           child: ListView.builder(
             physics: BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,
-            itemCount: availableShoes.length,
+            itemCount: selectedIndexOfCategory == 0
+                ? nikeShoes.length
+                : selectedIndexOfCategory == 1
+                    ? addidasShoes.length
+                    : selectedIndexOfCategory == 2
+                        ? jordanShoes.length
+                        : selectedIndexOfCategory == 3
+                            ? pumaShoes.length
+                            : nikeShoes.length,
             itemBuilder: (ctx, index) {
-              ShoeModel model = availableShoes[index];
+              ShoeModel model = selectedIndexOfCategory == 0
+                  ? nikeShoes[index]
+                  : selectedIndexOfCategory == 1
+                      ? addidasShoes[index]
+                      : selectedIndexOfCategory == 2
+                          ? jordanShoes[index]
+                          : selectedIndexOfCategory == 3
+                              ? pumaShoes[index]
+                              : nikeShoes[index];
+              String name = selectedIndexOfCategory == 0
+                  ? "Nike"
+                  : selectedIndexOfCategory == 1
+                      ? "Addidas"
+                      : selectedIndexOfCategory == 2
+                          ? "Jordan"
+                          : selectedIndexOfCategory == 3
+                              ? "Puma"
+                              : "Nike";
               return GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -261,10 +287,10 @@ class _BodyState extends State<Body> {
       height: height / 4,
       child: ListView.builder(
           physics: BouncingScrollPhysics(),
-          itemCount: availableShoes.length,
+          itemCount: nikeShoes.length,
           scrollDirection: Axis.horizontal,
           itemBuilder: (ctx, index) {
-            ShoeModel model = availableShoes[index];
+            ShoeModel model = nikeShoes[index];
             return GestureDetector(
               onTap: () {
                 Navigator.push(

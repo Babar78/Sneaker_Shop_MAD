@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,12 +29,12 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Quicksand',
       ),
       title: 'SoleQuest',
-      home: CheckLoggedInUser(),
+      home: const CheckLoggedInUser(),
       routes: {
-        '/login': (context) => Login(),
-        '/signup': (context) => Signup(),
+        '/login': (context) => const Login(),
+        '/signup': (context) => const Signup(),
         '/home': (context) => MainNavigator(),
-        '/checkout': (context) => Checkout(),
+        '/checkout': (context) => const Checkout(),
       },
     );
   }

@@ -156,7 +156,7 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                     ),
-                    obscureText: _showPassword,
+                    obscureText: !_showPassword,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your password';
