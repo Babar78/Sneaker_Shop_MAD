@@ -307,24 +307,21 @@ class details extends State<DetailsBody> {
           Expanded(
             child: Container(),
           ),
-          Container(
-            width: width / 9,
-            child: TextButton(
-              onPressed: () {
-                setState(() {
-                  _isSelectedCountry = false;
-                });
-              },
-              child: Text(
-                "UK",
-                style: TextStyle(
-                  fontWeight:
-                      _isSelectedCountry ? FontWeight.w400 : FontWeight.bold,
-                  color: _isSelectedCountry
-                      ? Colors.grey
-                      : AppConstantsColor.darkTextColor,
-                  fontSize: 19,
-                ),
+          TextButton(
+            onPressed: () {
+              setState(() {
+                _isSelectedCountry = false;
+              });
+            },
+            child: Text(
+              "UK",
+              style: TextStyle(
+                fontWeight:
+                    _isSelectedCountry ? FontWeight.w400 : FontWeight.bold,
+                color: _isSelectedCountry
+                    ? Colors.grey
+                    : AppConstantsColor.darkTextColor,
+                fontSize: 19,
               ),
             ),
           ),
