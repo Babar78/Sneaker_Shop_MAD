@@ -32,8 +32,8 @@ PreferredSize? customAppBar() {
         Padding(
           padding: EdgeInsets.only(top: 8.0, right: 4),
           child: IconButton(
-            icon: FaIcon(
-              CupertinoIcons.bell,
+            icon: Icon(
+              Icons.shopping_bag,
               color: AppConstantsColor.darkTextColor,
               size: 25,
             ),

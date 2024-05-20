@@ -7,6 +7,7 @@ import 'package:sole_quest/view/checkout/checkout_screen.dart';
 import 'package:sole_quest/view/login/login.dart';
 import 'package:sole_quest/view/navigator.dart';
 import 'package:sole_quest/view/signup/signup.dart';
+import 'package:sole_quest/view/view.dart';
 
 void main() async {
   WidgetsFlutterBinding
