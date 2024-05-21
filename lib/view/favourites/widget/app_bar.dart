@@ -1,30 +1,41 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sole_quest/theme/custom_app_theme.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sole_quest/data/dummy_data.dart';
 import 'package:sole_quest/utils/constants.dart';
+import 'package:badges/badges.dart' as badges;
 
 PreferredSize? customAppBarFav(ctx) {
+  int lengthsOfItemsOnBag = itemsOnBag.length;
   return PreferredSize(
     preferredSize: const Size.fromHeight(60),
     child: AppBar(
       elevation: 0,
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.white,
       centerTitle: true,
-      title: Text("Nike", style: AppThemes.detailsAppBar),
-      leading: IconButton(
-        onPressed: () {
-          Navigator.pop(ctx);
-        },
-        icon: Icon(
-          Icons.arrow_back,
-          color: AppConstantsColor.darkTextColor,
-        ),
-      ),
+      title: Text("Favorites",
+          style: TextStyle(
+              color: AppConstantsColor.darkTextColor,
+              fontSize: 20,
+              fontWeight: FontWeight.bold)),
       actions: [
         IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.favorite_border),
+          icon: badges.Badge(
+            badgeContent: Text(
+              lengthsOfItemsOnBag.toString(),
+              style: TextStyle(color: Colors.white),
+            ),
+            child: FaIcon(
+              CupertinoIcons.bag_fill,
+              color: AppConstantsColor.darkTextColor,
+              size: 25,
+            ),
+          ),
+          onPressed: () {
+            Navigator.pushNamed(ctx, '/cart');
+          },
         ),
       ],
     ),

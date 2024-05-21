@@ -25,25 +25,6 @@ class _BodyState extends State<Body> {
 
   bool isFavourite = false;
 
-  void handleToggleFavourites(ShoeModel data, BuildContext context) {
-    bool contains = favItems.contains(data);
-
-    if (contains == true) {
-      setState(() {
-        favItems.remove(data);
-      });
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-      ScaffoldMessenger.of(context)
-          .showSnackBar(successRemoveFromFavSnackBar());
-    } else {
-      setState(() {
-        favItems.add(data);
-      });
-      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-      ScaffoldMessenger.of(context).showSnackBar(successAddToFavSnackBar());
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -421,5 +402,24 @@ class _BodyState extends State<Body> {
             );
           }),
     );
+  }
+
+  void handleToggleFavourites(ShoeModel data, BuildContext context) {
+    bool contains = favItems.contains(data);
+
+    if (contains == true) {
+      setState(() {
+        favItems.remove(data);
+      });
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context)
+          .showSnackBar(successRemoveFromFavSnackBar());
+    } else {
+      setState(() {
+        favItems.add(data);
+      });
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(successAddToFavSnackBar());
+    }
   }
 }
