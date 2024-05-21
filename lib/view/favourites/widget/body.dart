@@ -3,13 +3,13 @@ import 'package:sole_quest/animation/fadeanimation.dart';
 import 'package:sole_quest/data/dummy_data.dart';
 import 'package:sole_quest/models/models.dart';
 import 'package:sole_quest/theme/custom_app_theme.dart';
-import 'package:sole_quest/utils/app_methods.dart';
 import 'package:sole_quest/utils/constants.dart';
 import 'package:sole_quest/view/view.dart';
 import 'package:sole_quest/widget/snack_bar.dart';
 
 class FavouritesView extends StatefulWidget {
-  const FavouritesView({Key? key}) : super(key: key);
+  const FavouritesView({Key? key, required this.updateCart}) : super(key: key);
+  final Function(ShoeModel data, BuildContext context) updateCart;
 
   @override
   State<FavouritesView> createState() => _FavouritesViewState();
@@ -175,7 +175,7 @@ class _FavouritesViewState extends State<FavouritesView> {
                                   children: [
                                     TextButton(
                                       onPressed: () {
-                                        AppMethods.addToCart(model, context);
+                                        widget.updateCart(model, context);
                                       },
                                       style: TextButton.styleFrom(
                                         padding: EdgeInsets

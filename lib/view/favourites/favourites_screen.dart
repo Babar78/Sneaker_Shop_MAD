@@ -24,6 +24,23 @@ class _FavouritesScreenState extends State<FavouritesScreen> {
     return Scaffold(
         backgroundColor: AppConstantsColor.backgroundColor,
         appBar: customAppBarFav(context),
-        body: const FavouritesView());
+        body: FavouritesView(
+          updateCart: addToCart,
+        ));
+  }
+
+  void addToCart(ShoeModel data, BuildContext context) {
+    bool contains = itemsOnBag.contains(data);
+
+    if (contains == true) {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(failedAddToCartSnackBar());
+    } else {
+      setState(() {
+        itemsOnBag.add(data);
+      });
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(successAddToCartSnackBar());
+    }
   }
 }
