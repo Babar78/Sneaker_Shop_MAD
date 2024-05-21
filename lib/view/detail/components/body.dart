@@ -15,7 +15,12 @@ import '../../../theme/custom_app_theme.dart';
 class DetailsBody extends StatefulWidget {
   ShoeModel model;
   bool isComeFromMoreSection;
-  DetailsBody({required this.model, required this.isComeFromMoreSection});
+  DetailsBody(
+      {required this.model,
+      required this.isComeFromMoreSection,
+      required this.updateCart});
+
+  final Function(ShoeModel data, BuildContext context) updateCart;
 
   @override
   details createState() => details();
@@ -196,7 +201,7 @@ class details extends State<DetailsBody> {
         height: height / 15,
         color: AppConstantsColor.materialButtonColor,
         onPressed: () {
-          AppMethods.addToCart(widget.model, context);
+          widget.updateCart(widget.model, context);
         },
         child: Text(
           "ADD TO BAG",

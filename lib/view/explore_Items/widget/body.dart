@@ -5,14 +5,16 @@ import 'package:sole_quest/theme/custom_app_theme.dart';
 import 'package:sole_quest/view/view.dart';
 import 'package:sole_quest/widget/snack_bar.dart';
 
-import '../../../../utils/app_methods.dart';
 import '../../../animation/fadeanimation.dart';
 import '../../../utils/constants.dart';
 import '../../../data/dummy_data.dart';
 import '../../../models/models.dart';
 
 class ExploreItemsView extends StatefulWidget {
-  const ExploreItemsView({Key? key}) : super(key: key);
+  const ExploreItemsView({Key? key, required this.updateCart})
+      : super(key: key);
+
+  final Function(ShoeModel data, BuildContext context) updateCart;
 
   @override
   _ExploreItemsViewState createState() => _ExploreItemsViewState();
@@ -163,7 +165,7 @@ class _ExploreItemsViewState extends State<ExploreItemsView>
                                   children: [
                                     TextButton(
                                       onPressed: () {
-                                        AppMethods.addToCart(model, context);
+                                        widget.updateCart(model, context);
                                       },
                                       style: TextButton.styleFrom(
                                         padding: EdgeInsets
