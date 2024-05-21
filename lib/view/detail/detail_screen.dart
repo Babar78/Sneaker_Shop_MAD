@@ -11,29 +11,27 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          extendBodyBehindAppBar: true,
-          backgroundColor: AppConstantsColor.backgroundColor,
-          appBar: AppBar(
-            elevation: 0,
-            backgroundColor: Colors.transparent,
-            centerTitle: true,
-            title: Text(model.name, style: AppThemes.detailsAppBar),
-            leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(
-                Icons.arrow_back,
-                color: AppConstantsColor.darkTextColor,
-              ),
+    return Scaffold(
+        extendBodyBehindAppBar: true,
+        backgroundColor: AppConstantsColor.backgroundColor,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          centerTitle: true,
+          title: Text(model.name, style: AppThemes.detailsAppBar),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              color: AppConstantsColor.darkTextColor,
             ),
           ),
-          body: DetailsBody(
-            model: model,
-            isComeFromMoreSection: isComeFromMoreSection,
-          )),
-    );
+        ),
+        body: DetailsBody(
+          model: model,
+          isComeFromMoreSection: isComeFromMoreSection,
+        ));
   }
 }

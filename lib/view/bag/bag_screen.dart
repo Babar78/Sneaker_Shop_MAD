@@ -9,31 +9,20 @@ import 'package:sole_quest/view/bag/widget/body.dart';
 class MyBagScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: AppConstantsColor.backgroundColor,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          centerTitle: true,
-          title: const Text("Cart",
-              style: TextStyle(
-                color: AppConstantsColor.darkTextColor,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              )),
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(
-              Icons.arrow_back,
+    return Scaffold(
+      backgroundColor: AppConstantsColor.backgroundColor,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        title: const Text("Cart",
+            style: TextStyle(
               color: AppConstantsColor.darkTextColor,
-            ),
-          ),
-        ),
-        body: const BodyBagView(),
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            )),
       ),
+      body: const BodyBagView(),
     );
   }
 }

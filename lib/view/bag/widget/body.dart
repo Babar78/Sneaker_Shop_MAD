@@ -33,9 +33,6 @@ class _BodyBagViewState extends State<BodyBagView>
           Positioned.fill(
             child: Column(
               children: [
-                Divider(
-                  color: Colors.grey,
-                ),
                 topText(width, height),
                 itemsOnBag.isEmpty
                     ? EmptyList()

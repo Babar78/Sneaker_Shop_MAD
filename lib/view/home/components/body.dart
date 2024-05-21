@@ -268,7 +268,9 @@ class _BodyState extends State<Body> {
           Text("More", style: AppThemes.homeMoreText),
           Expanded(child: Container()),
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/exploreItems');
+              },
               icon: FaIcon(
                 CupertinoIcons.arrow_right,
                 size: 27,

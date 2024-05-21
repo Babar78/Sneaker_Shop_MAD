@@ -1,21 +1,27 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unnecessary_brace_in_string_interps, sized_box_for_whitespace
+
 import 'package:flutter/material.dart';
-import 'package:sole_quest/animation/fadeanimation.dart';
-import 'package:sole_quest/data/dummy_data.dart';
-import 'package:sole_quest/models/models.dart';
 import 'package:sole_quest/theme/custom_app_theme.dart';
-import 'package:sole_quest/utils/app_methods.dart';
-import 'package:sole_quest/utils/constants.dart';
 import 'package:sole_quest/view/view.dart';
 import 'package:sole_quest/widget/snack_bar.dart';
 
-class FavouritesView extends StatefulWidget {
-  const FavouritesView({Key? key}) : super(key: key);
+import '../../../../utils/app_methods.dart';
+import '../../../animation/fadeanimation.dart';
+import '../../../utils/constants.dart';
+import '../../../data/dummy_data.dart';
+import '../../../models/models.dart';
+
+class ExploreItemsView extends StatefulWidget {
+  const ExploreItemsView({Key? key}) : super(key: key);
 
   @override
-  State<FavouritesView> createState() => _FavouritesViewState();
+  _ExploreItemsViewState createState() => _ExploreItemsViewState();
 }
 
-class _FavouritesViewState extends State<FavouritesView> {
+class _ExploreItemsViewState extends State<ExploreItemsView>
+    with SingleTickerProviderStateMixin {
+  int lengthsOfItemsOnBag = itemsOnBag.length;
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -31,7 +37,7 @@ class _FavouritesViewState extends State<FavouritesView> {
             child: GridView.builder(
               padding: const EdgeInsets.all(10),
               physics: const BouncingScrollPhysics(),
-              itemCount: favItems.length,
+              itemCount: allShoes.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, // Number of items per row
                 crossAxisSpacing: 10,
@@ -40,7 +46,7 @@ class _FavouritesViewState extends State<FavouritesView> {
                     width / (height / 1.5), // Adjust the height ratio
               ),
               itemBuilder: (ctx, index) {
-                ShoeModel model = favItems[index];
+                ShoeModel model = allShoes[index];
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -60,24 +66,6 @@ class _FavouritesViewState extends State<FavouritesView> {
                     ),
                     child: Stack(
                       children: [
-                        FadeAnimation(
-                          delay: 1,
-                          child: Container(
-                            width: width / 13,
-                            height: height / 10,
-                            color: Colors.red,
-                            child: RotatedBox(
-                              quarterTurns: -1,
-                              child: Center(
-                                child: FadeAnimation(
-                                  delay: 1.5,
-                                  child: const Text("Favorite",
-                                      style: AppThemes.homeGridNewText),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
                         Positioned(
                           right: 5,
                           child: IconButton(
@@ -213,6 +201,9 @@ class _FavouritesViewState extends State<FavouritesView> {
               },
             ),
           ),
+          Container(
+            height: 30,
+          )
         ],
       ),
     );

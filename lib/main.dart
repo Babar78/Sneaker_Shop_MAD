@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sole_quest/checkLoggedIn.dart';
 import 'package:sole_quest/firebase_options.dart';
+import 'package:sole_quest/view/explore_Items/exploreItemsScreen.dart';
 import 'package:sole_quest/view/checkout/checkout_screen.dart';
 import 'package:sole_quest/view/login/login.dart';
 import 'package:sole_quest/view/navigator.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => const Signup(),
         '/home': (context) => MainNavigator(),
         '/checkout': (context) => const Checkout(),
+        '/exploreItems': (context) => const ExploreItemsScreen(),
         '/cart': (context) => MyBagScreen(),
       },
     );
