@@ -6,6 +6,7 @@ class ShoeModel {
   String name;
   String model;
   double price;
+  int quantity = 1;
   String imgAddress;
   Color modelColor;
   ShoeModel({
@@ -16,7 +17,3 @@ class ShoeModel {
     required this.modelColor,
   });
 }
-
-
-
- 

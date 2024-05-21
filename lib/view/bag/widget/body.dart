@@ -178,8 +178,14 @@ class _BodyBagViewState extends State<BodyBagView>
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    itemsOnBag.remove(currentBagItem);
-                                    lengthsOfItemsOnBag = itemsOnBag.length;
+                                    {
+                                      if (itemsOnBag[index].quantity > 1) {
+                                        itemsOnBag[index].quantity--;
+                                      } else {
+                                        itemsOnBag.removeAt(index);
+                                        lengthsOfItemsOnBag = itemsOnBag.length;
+                                      }
+                                    }
                                   });
                                 },
                                 child: Container(
@@ -199,12 +205,17 @@ class _BodyBagViewState extends State<BodyBagView>
                               SizedBox(
                                 width: 10,
                               ),
-                              Text("1", style: AppThemes.bagProductNumOfShoe),
+                              Text(itemsOnBag[index].quantity.toString(),
+                                  style: AppThemes.bagProductNumOfShoe),
                               SizedBox(
                                 width: 10,
                               ),
                               GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  setState(() {
+                                    itemsOnBag[index].quantity++;
+                                  });
+                                },
                                 child: Container(
                                   width: 30,
                                   height: 30,

@@ -24,7 +24,7 @@ class AppMethods {
   static double sumOfItemsOnBag() {
     double sumPrice = 0.0;
     for (ShoeModel bagModel in itemsOnBag) {
-      sumPrice = sumPrice + bagModel.price;
+      sumPrice = sumPrice + (bagModel.price * bagModel.quantity);
     }
     return sumPrice;
   }
