@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sole_quest/theme/custom_app_theme.dart';
+import 'package:sole_quest/widget/snack_bar.dart';
 
 import '../../../../animation/fadeanimation.dart';
 import '../../../../utils/constants.dart';
@@ -21,6 +22,27 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   int selectedIndexOfCategory = 0;
   int selectedIndexOfFeatured = 1;
+
+  bool isFavourite = false;
+
+  void handleToggleFavourites(ShoeModel data, BuildContext context) {
+    bool contains = favItems.contains(data);
+
+    if (contains == true) {
+      setState(() {
+        favItems.remove(data);
+      });
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context)
+          .showSnackBar(successRemoveFromFavSnackBar());
+    } else {
+      setState(() {
+        favItems.add(data);
+      });
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(successAddToFavSnackBar());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -145,15 +167,6 @@ class _BodyState extends State<Body> {
                           : selectedIndexOfCategory == 3
                               ? pumaShoes[index]
                               : nikeShoes[index];
-              String name = selectedIndexOfCategory == 0
-                  ? "Nike"
-                  : selectedIndexOfCategory == 1
-                      ? "Addidas"
-                      : selectedIndexOfCategory == 2
-                          ? "Jordan"
-                          : selectedIndexOfCategory == 3
-                              ? "Puma"
-                              : "Nike";
               return GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -190,9 +203,13 @@ class _BodyState extends State<Body> {
                                 width: 120,
                               ),
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  handleToggleFavourites(model, context);
+                                },
                                 icon: Icon(
-                                  Icons.favorite_border,
+                                  favItems.contains(model)
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
                                   color: Colors.white,
                                 ),
                               ),
@@ -335,10 +352,16 @@ class _BodyState extends State<Body> {
                     Positioned(
                       left: 140,
                       child: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          handleToggleFavourites(model, context);
+                        },
                         icon: Icon(
-                          Icons.favorite_border,
-                          color: AppConstantsColor.darkTextColor,
+                          favItems.contains(model)
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: favItems.contains(model)
+                              ? Colors.red
+                              : Colors.black,
                         ),
                       ),
                     ),

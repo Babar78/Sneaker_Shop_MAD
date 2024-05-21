@@ -177,6 +177,8 @@ final List<ShoeModel> pumaShoes = [
 
 List<ShoeModel> itemsOnBag = [];
 
+List<ShoeModel> favItems = [];
+
 final List<UserStatus> userStatus = [
   UserStatus(
     emoji: '😴',
